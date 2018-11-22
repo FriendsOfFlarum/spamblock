@@ -1,6 +1,6 @@
 {
   "name": "fof/spamblock",
-  "description": "Mark user as spammer, suspending them &amp; hiding their posts and discussions",
+  "description": "Mark user as spammer, suspending them & hiding their posts and discussions",
   "keywords": [
     "flarum"
   ],

@@ -2,7 +2,7 @@
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg) [![Latest Stable Version](https://img.shields.io/packagist/v/fof/spamblock.svg)](https://packagist.org/packages/fof/spamblock)
 
-A [Flarum](http://flarum.org) extension. Mark user as spammer, suspending them &amp; hiding their posts and discussions
+A [Flarum](http://flarum.org) extension. Mark user as spammer, suspending them & hiding their posts and discussions.
 
 ### Installation
 
