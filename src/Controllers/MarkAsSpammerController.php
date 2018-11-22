@@ -50,10 +50,10 @@ class MarkAsSpammerController implements RequestHandlerInterface
     {
         $actor = $request->getAttribute('actor');
 
-        $this->assertAdmin($actor);
-
         $userId = array_get($request->getQueryParams(), 'id');
         $user = User::findOrFail($userId);
+
+        $this->assertCan($actor, 'spamblock', $user);
 
         if ($this->extensions->isEnabled('flarum-suspend') && !isset($user->suspended_until)) {
             $this->bus->dispatch(
@@ -62,7 +62,6 @@ class MarkAsSpammerController implements RequestHandlerInterface
                 ])
             );
         }
-
 
         foreach ($user->posts as $post) {
             if ($post->is_hidden) continue;
