@@ -63,25 +63,25 @@ class MarkAsSpammerController implements RequestHandlerInterface
             );
         }
 
-        foreach ($user->posts as $post) {
-            if ($post->is_hidden) continue;
+        $user->posts()->where('hidden_at', null)->chunk(50, function ($posts) use ($actor) {
+            foreach ($posts as $post) {
+                $this->bus->dispatch(
+                    new EditPost($post->id, $actor, [
+                        'attributes' => ['isHidden' => true]
+                    ])
+                );
+            }
+        });
 
-            $this->bus->dispatch(
-                new EditPost($post->id, $actor, [
-                    'attributes' => ['isHidden' => true]
-                ])
-            );
-        }
-
-        foreach ($user->discussions as $discussion) {
-            if ($discussion->is_hidden) continue;
-
-            $this->bus->dispatch(
-                new EditDiscussion($discussion->id, $actor, [
-                    'attributes' => ['isHidden' => true]
-                ])
-            );
-        }
+        $user->discussions()->where('hidden_at', null)->chunk(50, function ($discussions) use ($actor) {
+            foreach ($discussions as $discussion) {
+                $this->bus->dispatch(
+                    new EditDiscussion($discussion->id, $actor, [
+                        'attributes' => ['isHidden' => true]
+                    ])
+                );
+            };
+        });
 
         return (new Response())->withStatus(204);
     }
