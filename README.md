@@ -4,6 +4,8 @@
 
 A [Flarum](http://flarum.org) extension. Mark user as spammer, suspending them & hiding their posts and discussions.
 
+![screenshot](https://i.imgur.com/0cwtLk5.png)
+
 ### Installation
 
 Use [Bazaar](https://discuss.flarum.org/d/5151-flagrow-bazaar-the-extension-marketplace) or install manually with composer:
