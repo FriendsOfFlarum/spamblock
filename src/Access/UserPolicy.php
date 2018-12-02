@@ -1,13 +1,12 @@
 <?php
 
-/**
- *  This file is part of fof/spamblock.
+/*
+ * This file is part of fof/spamblock.
  *
- *  Copyright (c) 2018 .
+ * Copyright (c) 2018 FriendsOfFlarum
  *
- *
- *  For the full copyright and license information, please view the LICENSE.md
- *  file that was distributed with this source code.
+ * For the full copyright and license information, please view the LICENSE.md
+ * file that was distributed with this source code.
  */
 
 namespace FoF\Spamblock\Access;
@@ -25,6 +24,7 @@ class UserPolicy extends AbstractPolicy
     /**
      * @param User $actor
      * @param User $user
+     *
      * @return bool|null
      */
     public function spamblock(User $actor, User $user)

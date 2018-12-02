@@ -1,21 +1,30 @@
 <?php
 
+/*
+ * This file is part of fof/spamblock.
+ *
+ * Copyright (c) 2018 FriendsOfFlarum
+ *
+ * For the full copyright and license information, please view the LICENSE.md
+ * file that was distributed with this source code.
+ */
+
 namespace FoF\Spamblock\Controllers;
 
 use Carbon\Carbon;
+use Flarum\Discussion\Command\EditDiscussion;
 use Flarum\Extension\ExtensionManager;
+use Flarum\Post\Command\EditPost;
+use Flarum\User\AssertPermissionTrait;
+use Flarum\User\Command\EditUser;
 use Flarum\User\User;
 use FoF\Spamblock\Event\MarkedUserAsSpammer;
-use Zend\Diactoros\Response;
-use Flarum\Post\Command\EditPost;
-use Flarum\User\Command\EditUser;
-use Flarum\User\AssertPermissionTrait;
-use Psr\Http\Message\ResponseInterface;
 use Illuminate\Contracts\Bus\Dispatcher;
 use Illuminate\Contracts\Events\Dispatcher as EventsDispatcher;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Flarum\Discussion\Command\EditDiscussion;
+use Zend\Diactoros\Response;
 
 class MarkAsSpammerController implements RequestHandlerInterface
 {
@@ -38,7 +47,7 @@ class MarkAsSpammerController implements RequestHandlerInterface
 
     /**
      * @param EventsDispatcher $events
-     * @param Dispatcher $bus
+     * @param Dispatcher       $bus
      * @param ExtensionManager $extensions
      */
     public function __construct(Dispatcher $bus, EventsDispatcher $events, ExtensionManager $extensions)
@@ -50,7 +59,9 @@ class MarkAsSpammerController implements RequestHandlerInterface
 
     /**
      * Handle the request and return a response.
+     *
      * @param ServerRequestInterface $request
+     *
      * @return ResponseInterface
      */
     public function handle(ServerRequestInterface $request) : ResponseInterface
@@ -65,7 +76,7 @@ class MarkAsSpammerController implements RequestHandlerInterface
         if ($this->extensions->isEnabled('flarum-suspend') && !isset($user->suspended_until)) {
             $this->bus->dispatch(
                 new EditUser($user->id, $actor, [
-                    'attributes' => ['suspendedUntil' => Carbon::now()->addYear(20)]
+                    'attributes' => ['suspendedUntil' => Carbon::now()->addYear(20)],
                 ])
             );
         }
@@ -74,7 +85,7 @@ class MarkAsSpammerController implements RequestHandlerInterface
             foreach ($posts as $post) {
                 $this->bus->dispatch(
                     new EditPost($post->id, $actor, [
-                        'attributes' => ['isHidden' => true]
+                        'attributes' => ['isHidden' => true],
                     ])
                 );
             }
@@ -84,10 +95,10 @@ class MarkAsSpammerController implements RequestHandlerInterface
             foreach ($discussions as $discussion) {
                 $this->bus->dispatch(
                     new EditDiscussion($discussion->id, $actor, [
-                        'attributes' => ['isHidden' => true]
+                        'attributes' => ['isHidden' => true],
                     ])
                 );
-            };
+            }
         });
 
         $this->events->dispatch(
