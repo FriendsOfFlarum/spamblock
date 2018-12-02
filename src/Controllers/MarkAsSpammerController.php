@@ -5,17 +5,17 @@ namespace FoF\Spamblock\Controllers;
 use Carbon\Carbon;
 use Flarum\Extension\ExtensionManager;
 use Flarum\User\User;
+use FoF\Spamblock\Event\MarkedUserAsSpammer;
 use Zend\Diactoros\Response;
 use Flarum\Post\Command\EditPost;
 use Flarum\User\Command\EditUser;
-use Flarum\Post\Command\DeletePost;
 use Flarum\User\AssertPermissionTrait;
 use Psr\Http\Message\ResponseInterface;
 use Illuminate\Contracts\Bus\Dispatcher;
+use Illuminate\Contracts\Events\Dispatcher as EventsDispatcher;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Flarum\Discussion\Command\EditDiscussion;
-use Flarum\Discussion\Command\DeleteDiscussion;
 
 class MarkAsSpammerController implements RequestHandlerInterface
 {
@@ -27,17 +27,24 @@ class MarkAsSpammerController implements RequestHandlerInterface
     protected $bus;
 
     /**
+     * @var EventsDispatcher
+     */
+    protected $events;
+
+    /**
      * @var ExtensionManager
      */
     protected $extensions;
 
     /**
+     * @param EventsDispatcher $events
      * @param Dispatcher $bus
      * @param ExtensionManager $extensions
      */
-    public function __construct(Dispatcher $bus, ExtensionManager $extensions)
+    public function __construct(Dispatcher $bus, EventsDispatcher $events, ExtensionManager $extensions)
     {
         $this->bus = $bus;
+        $this->events = $events;
         $this->extensions = $extensions;
     }
 
@@ -82,6 +89,10 @@ class MarkAsSpammerController implements RequestHandlerInterface
                 );
             };
         });
+
+        $this->events->dispatch(
+            new MarkedUserAsSpammer($user, $actor)
+        );
 
         return (new Response())->withStatus(204);
     }
