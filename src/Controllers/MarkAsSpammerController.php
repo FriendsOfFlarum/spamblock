@@ -14,6 +14,8 @@ namespace FoF\Spamblock\Controllers;
 use Carbon\Carbon;
 use Flarum\Discussion\Command\EditDiscussion;
 use Flarum\Extension\ExtensionManager;
+use Flarum\Flags\Command\DeleteFlags;
+use Flarum\Flags\Flag;
 use Flarum\Post\Command\EditPost;
 use Flarum\User\AssertPermissionTrait;
 use Flarum\User\Command\EditUser;
@@ -73,7 +75,10 @@ class MarkAsSpammerController implements RequestHandlerInterface
 
         $this->assertCan($actor, 'spamblock', $user);
 
-        if ($this->extensions->isEnabled('flarum-suspend') && !isset($user->suspended_until)) {
+        $flarumSuspend = $this->extensions->isEnabled('flarum-suspend');
+        $flarumFlags = $this->extensions->isEnabled('flarum-flags');
+
+        if ($flarumSuspend && !isset($user->suspended_until)) {
             $this->bus->dispatch(
                 new EditUser($user->id, $actor, [
                     'attributes' => ['suspendedUntil' => Carbon::now()->addYear(20)],
@@ -81,13 +86,19 @@ class MarkAsSpammerController implements RequestHandlerInterface
             );
         }
 
-        $user->posts()->where('hidden_at', null)->chunk(50, function ($posts) use ($actor) {
+        $user->posts()->where('hidden_at', null)->chunk(50, function ($posts) use ($actor, $flarumFlags) {
             foreach ($posts as $post) {
                 $this->bus->dispatch(
                     new EditPost($post->id, $actor, [
                         'attributes' => ['isHidden' => true],
                     ])
                 );
+
+                if ($flarumFlags) {
+                    $this->bus->dispatch(
+                        new DeleteFlags($post->id, $actor)
+                    );
+                }
             }
         });
 
