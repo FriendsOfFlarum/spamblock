@@ -15,7 +15,6 @@ use Carbon\Carbon;
 use Flarum\Discussion\Command\EditDiscussion;
 use Flarum\Extension\ExtensionManager;
 use Flarum\Flags\Command\DeleteFlags;
-use Flarum\Flags\Flag;
 use Flarum\Post\Command\EditPost;
 use Flarum\User\AssertPermissionTrait;
 use Flarum\User\Command\EditUser;
