@@ -29,6 +29,6 @@ class UserPolicy extends AbstractPolicy
      */
     public function spamblock(User $actor, User $user)
     {
-        return $user->exists && $actor->id !== $user->id && $user->cannot('user.spamblock');
+        if ($actor->id === $user->id || $user->can('user.spamblock')) return false;
     }
 }
