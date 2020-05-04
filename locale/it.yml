@@ -1,9 +1,0 @@
-fof-spamblock:
-  forum:
-    user_controls:
-      spammer_button: Spammer
-      spammer_confirmation: "Sei sicuro di voler \n• Nascondere tutte le discussioni ed i messaggi dell'utente \n• [flarum/suspend] Sospendere l'utente"
-
-  admin:
-    permissions:
-      spamblock_users_label: Contrassegna come Spammer
