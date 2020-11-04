@@ -22,6 +22,7 @@ use Flarum\User\User;
 use FoF\Spamblock\Event\MarkedUserAsSpammer;
 use Illuminate\Contracts\Bus\Dispatcher;
 use Illuminate\Contracts\Events\Dispatcher as EventsDispatcher;
+use Illuminate\Support\Arr;
 use Laminas\Diactoros\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -69,7 +70,7 @@ class MarkAsSpammerController implements RequestHandlerInterface
     {
         $actor = $request->getAttribute('actor');
 
-        $userId = array_get($request->getQueryParams(), 'id');
+        $userId = Arr::get($request->getQueryParams(), 'id');
         $user = User::findOrFail($userId);
 
         $this->assertCan($actor, 'spamblock', $user);

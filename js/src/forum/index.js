@@ -14,7 +14,6 @@ app.initializers.add('fof/spamblock', () => {
                 'spammer',
                 Button.component({
                     icon: 'fas fa-pastafarianism',
-                    children: app.translator.trans('fof-spamblock.forum.user_controls.spammer_button'),
                     onclick: () => {
                         if (!confirm(app.translator.trans('fof-spamblock.forum.user_controls.spammer_confirmation'))) return;
 
@@ -23,7 +22,7 @@ app.initializers.add('fof/spamblock', () => {
                             method: 'POST',
                         }).then(() => window.location.reload());
                     },
-                })
+                }, app.translator.trans('fof-spamblock.forum.user_controls.spammer_button'))
             );
         }
     });
