@@ -16,7 +16,6 @@ use Flarum\Discussion\Command\EditDiscussion;
 use Flarum\Extension\ExtensionManager;
 use Flarum\Flags\Command\DeleteFlags;
 use Flarum\Post\Command\EditPost;
-use Flarum\User\AssertPermissionTrait;
 use Flarum\User\Command\EditUser;
 use Flarum\User\User;
 use FoF\Spamblock\Event\MarkedUserAsSpammer;
@@ -30,8 +29,6 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class MarkAsSpammerController implements RequestHandlerInterface
 {
-    use AssertPermissionTrait;
-
     /**
      * @var Dispatcher
      */
@@ -73,7 +70,7 @@ class MarkAsSpammerController implements RequestHandlerInterface
         $userId = Arr::get($request->getQueryParams(), 'id');
         $user = User::findOrFail($userId);
 
-        $this->assertCan($actor, 'spamblock', $user);
+        $actor->assertCan('spamblock', $user);
 
         $flarumSuspend = $this->extensions->isEnabled('flarum-suspend');
         $flarumFlags = $this->extensions->isEnabled('flarum-flags');
