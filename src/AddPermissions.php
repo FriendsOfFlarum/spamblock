@@ -19,6 +19,7 @@ class AddPermissions
     public function __invoke(UserSerializer $serializer, User $user, array $attributes): array
     {
         $attributes['canSpamblock'] = $serializer->getActor()->can('spamblock', $user);
+
         return $attributes;
     }
 }
