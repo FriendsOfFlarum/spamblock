@@ -1,12 +1,10 @@
-import PermissionGrid from 'flarum/components/PermissionGrid';
-import { extend } from 'flarum/extend';
+import app from 'flarum/app';
 
 app.initializers.add('fof-spamblock', () => {
-    extend(PermissionGrid.prototype, 'moderateItems', items => {
-        items.add('spamblockUsers', {
+    app.extensionData.for('fof-spamblock')
+        .registerPermission({
             icon: 'fas fa-pastafarianism',
             label: app.translator.trans('fof-spamblock.admin.permissions.spamblock_users_label'),
             permission: 'user.spamblock',
-        });
-    });
+        }, 'moderate');
 });
