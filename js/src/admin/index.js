@@ -1,4 +1,4 @@
-import app from 'flarum/app';
+import app from 'flarum/common/app';
 
 app.initializers.add('fof-spamblock', () => {
     app.extensionData.for('fof-spamblock')

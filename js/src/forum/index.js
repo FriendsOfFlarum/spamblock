@@ -1,9 +1,9 @@
-import { extend } from 'flarum/extend';
-import Button from 'flarum/components/Button';
-import UserControls from 'flarum/utils/UserControls';
+import { extend } from 'flarum/common/extend';
+import Button from 'flarum/common/components/Button';
+import UserControls from 'flarum/common/utils/UserControls';
 
-import User from 'flarum/models/User';
-import Model from 'flarum/Model';
+import User from 'flarum/common/models/User';
+import Model from 'flarum/common/Model';
 
 app.initializers.add('fof/spamblock', () => {
     User.prototype.canSpamblock = Model.attribute('canSpamblock');
