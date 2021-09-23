@@ -41,11 +41,11 @@
         "name": "fas fa-pastafarianism",
         "backgroundColor": "#e74c3c",
         "color": "#fff",
-        "optional-dependencies": [
-          "flarum/suspend",
-          "flarum/flags"
-        ]
-      }
+      },
+      "optional-dependencies": [
+        "flarum/suspend",
+        "flarum/flags"
+      ]
     },
     "flagrow": {
       "discuss": "https://discuss.flarum.org/d/17772"
