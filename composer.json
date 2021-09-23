@@ -40,7 +40,7 @@
       "icon": {
         "name": "fas fa-pastafarianism",
         "backgroundColor": "#e74c3c",
-        "color": "#fff",
+        "color": "#fff"
       },
       "optional-dependencies": [
         "flarum/suspend",
