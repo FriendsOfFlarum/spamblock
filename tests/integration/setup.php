@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of fof/moderator-notes.
+ * This file is part of fof/spamblock.
  *
  * Copyright (c) FriendsOfFlarum.
  *

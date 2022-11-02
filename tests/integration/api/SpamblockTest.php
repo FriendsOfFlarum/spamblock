@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of fof/spamblock.
+ *
+ * Copyright (c) FriendsOfFlarum.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace FoF\Spamblock\Tests\integration\api;
 
 use Carbon\Carbon;
@@ -25,7 +34,7 @@ class SpamblockTest extends TestCase
                 ['user_id' => 3, 'group_id' => Group::MODERATOR_ID],
             ],
             'group_permission' => [
-                ['group_id' => Group::MODERATOR_ID, 'permission' => 'user.spamblock']
+                ['group_id' => Group::MODERATOR_ID, 'permission' => 'user.spamblock'],
             ],
             'discussions' => [
                 ['id' => 2, 'title' => __CLASS__, 'created_at' => Carbon::now(), 'last_posted_at' => Carbon::now(), 'user_id' => 5, 'first_post_id' => 4, 'comment_count' => 2, 'last_post_id' => 5],
@@ -44,7 +53,7 @@ class SpamblockTest extends TestCase
     {
         $response = $this->send(
             $this->request('POST', 'api/users/3/spamblock', [
-                'authenticatedAs' => 3
+                'authenticatedAs' => 3,
             ])
         );
 
@@ -58,7 +67,7 @@ class SpamblockTest extends TestCase
     {
         $response = $this->send(
             $this->request('POST', 'api/users/3/spamblock', [
-                'authenticatedAs' => 4
+                'authenticatedAs' => 4,
             ])
         );
 
@@ -72,7 +81,7 @@ class SpamblockTest extends TestCase
     {
         $response = $this->send(
             $this->request('POST', 'api/users/5/spamblock', [
-                'authenticatedAs' => 3
+                'authenticatedAs' => 3,
             ])
         );
 
@@ -80,7 +89,7 @@ class SpamblockTest extends TestCase
 
         $response = $this->send(
             $this->request('GET', 'api/discussions/2', [
-                'authenticatedAs' => 3
+                'authenticatedAs' => 3,
             ])
         );
 
@@ -101,7 +110,7 @@ class SpamblockTest extends TestCase
     {
         $response = $this->send(
             $this->request('POST', 'api/users/5/spamblock', [
-                'authenticatedAs' => 3
+                'authenticatedAs' => 3,
             ])
         );
 
@@ -109,7 +118,7 @@ class SpamblockTest extends TestCase
 
         $response = $this->send(
             $this->request('GET', 'api/discussions/2', [
-                'authenticatedAs' => 4
+                'authenticatedAs' => 4,
             ])
         );
 
