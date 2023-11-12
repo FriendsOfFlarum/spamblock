@@ -79,7 +79,7 @@ class MarkAsSpammerController implements RequestHandlerInterface
         if ($flarumSuspend && !isset($user->suspended_until)) {
             $this->bus->dispatch(
                 new EditUser($user->id, $actor, [
-                    'attributes' => ['suspendedUntil' => Carbon::now()->addYear(20)],
+                    'attributes' => ['suspendedUntil' => Carbon::now()->addYears(20)],
                 ])
             );
         }
