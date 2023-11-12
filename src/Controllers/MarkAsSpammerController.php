@@ -76,6 +76,7 @@ class MarkAsSpammerController implements RequestHandlerInterface
         $flarumSuspend = $this->extensions->isEnabled('flarum-suspend');
         $flarumFlags = $this->extensions->isEnabled('flarum-flags');
 
+        /** @phpstan-ignore-next-line */
         if ($flarumSuspend && !isset($user->suspended_until)) {
             $this->bus->dispatch(
                 new EditUser($user->id, $actor, [
