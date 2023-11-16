@@ -15,6 +15,7 @@ use Carbon\Carbon;
 use Flarum\Group\Group;
 use Flarum\Post\CommentPost;
 use Flarum\Testing\integration\TestCase;
+use Flarum\User\User;
 
 class SpamblockTest extends TestCase
 {
@@ -44,6 +45,27 @@ class SpamblockTest extends TestCase
                 ['id' => 5, 'number' => 3, 'discussion_id' => 2, 'created_at' => Carbon::now(), 'user_id' => 4, 'type' => 'comment', 'content' => '<r>Some regular content</r>'],
             ],
         ]);
+    }
+
+    /**
+     * @test
+     */
+    public function user_is_also_suspended_when_suspend_is_enabled()
+    {
+        $this->extension('flarum-suspend');
+
+        $response = $this->send(
+            $this->request('POST', 'api/users/5/spamblock', [
+                'authenticatedAs' => 3,
+            ])
+        );
+
+        $this->assertEquals(204, $response->getStatusCode());
+
+        $user = User::find(5);
+
+        $this->assertNotNull($user->suspended_until);
+        $this->assertTrue(Carbon::parse($user->suspended_until)->greaterThan(Carbon::now()->addYears(19)));
     }
 
     /**
