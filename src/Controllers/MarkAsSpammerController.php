@@ -76,7 +76,7 @@ class MarkAsSpammerController implements RequestHandlerInterface
         $flarumFlags = $this->extensions->isEnabled('flarum-flags');
 
         /** @phpstan-ignore-next-line */
-        if ($this->extensions->isEnabled('flarum-suspend') && $user->suspended_until !== null) {
+        if ($this->extensions->isEnabled('flarum-suspend') && $user->suspended_until === null) {
             $this->bus->dispatch(
                 new EditUser($user->id, $actor, [
                     'attributes' => ['suspendedUntil' => Carbon::now()->addYears(20)],
